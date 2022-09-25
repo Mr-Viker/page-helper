@@ -102,7 +102,7 @@ export default class Tag extends Mixins(CommonPagination, ReportTable, Condition
 
     // 获取报表数据
     async getReports() {
-        if(this.condition.submitting) { return; } else { this.condition.submitting = true; }
+        // if(this.condition.submitting) { return; } else { this.condition.submitting = true; }
 
         let formatForm = this.getFormatForm();
         // const res = await getLabelList(formatForm).finally(() => this.condition.submitting = false);

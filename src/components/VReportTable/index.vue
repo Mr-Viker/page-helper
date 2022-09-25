@@ -61,7 +61,7 @@
                 <!-- 默认 -->
                 <el-table-column-auto v-else v-bind="column" :class-name="`table-column-${columnIndex} table-column-${column.key}`" :autoFit="autoFit(column)" 
                     :show-overflow-tooltip='showOverflowTooltip(column)' :key='column.key'>
-                    <ad-table-header slot="header" :column-data="column"></ad-table-header>
+<!--                    <ad-table-header slot="header" :column-data="column"></ad-table-header>-->
                     <template slot-scope="scope">
                         <template v-if="!scope.row.hasOwnProperty(column.prop)">-</template>
                         <!-- image -->

@@ -54,13 +54,13 @@
   },
   "peerDependencies": {
     "@babel/runtime": "^7.x",
-    "clipboard": "^2.x",
-    "vue": "^2.6.x",
-    "vue-class-component": "^7.x",
-    "vue-property-decorator": "^8.x",
     "@ewan/ewan-admin": "^1.x",
     "@ewan/ewan-ui": "^1.x",
-    "moment": "^2.x"
+    "clipboard": "^2.x",
+    "moment": "^2.x",
+    "vue": "^2.6.x",
+    "vue-class-component": "^7.x",
+    "vue-property-decorator": "^8.x"
   },
   "repository": {
     "type": "git",

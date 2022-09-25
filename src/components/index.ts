@@ -4,7 +4,7 @@ import VReportTable from './VReportTable/index.vue';
 import VTableDialog from './VTableDialog/index.vue';
 
 
-const installAll = Vue => {
+const install = Vue => {
     const components = [
         VDrawer,
         VFormDialog,
@@ -17,7 +17,7 @@ const installAll = Vue => {
 
 
 export {
-    installAll,
+    install,
     VDrawer,
     VFormDialog,
     VReportTable,

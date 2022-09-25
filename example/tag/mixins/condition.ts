@@ -14,7 +14,7 @@ export default class Condition extends Mixins(BaseCondition) {
     // 整个筛选组件的配置
     protected condition: ICondition = {
         showTopRow: false,
-        showDropdown: false,
+        // showDropdown: false,
 
         form: {
             date: [moment().subtract(6, 'days').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD'), 2],
