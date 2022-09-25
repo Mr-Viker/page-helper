@@ -1,0 +1,75 @@
+{
+  "name": "@viker-lib/page-helper",
+  "version": "1.0.0",
+  "description": "page-helper",
+  "keywords": [
+    "vue",
+    "page",
+    "helper"
+  ],
+  "files": [
+    "dist",
+    "src"
+  ],
+  "main": "dist/index.js",
+  "style": "dist/index.css",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack serve --config ./build/webpack.dev.js --node-env=development --progress",
+    "build": "webpack --config ./build/webpack.prod.js --node-env=production --progress"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.5",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/plugin-proposal-decorators": "^7.15.4",
+    "@babel/plugin-transform-modules-commonjs": "^7.15.4",
+    "@babel/plugin-transform-runtime": "^7.15.0",
+    "@babel/preset-env": "^7.15.6",
+    "@babel/runtime": "^7.15.4",
+    "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
+    "@vue/babel-preset-app": "^4.5.13",
+    "@vue/babel-preset-jsx": "^1.2.4",
+    "@zerollup/ts-transform-paths": "^1.7.18",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^6.3.0",
+    "css-minimizer-webpack-plugin": "^3.0.2",
+    "html-webpack-plugin": "^5.3.2",
+    "mini-css-extract-plugin": "^2.3.0",
+    "sass": "^1.42.0",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^3.2.1",
+    "ts-loader": "^9.2.6",
+    "ttypescript": "^1.5.12",
+    "typescript": "^4.4.3",
+    "vue": "^2.6.14",
+    "vue-class-component": "^7.2.6",
+    "vue-loader": "^15.9.8",
+    "vue-property-decorator": "^9.1.2",
+    "vue-template-compiler": "^2.6.14",
+    "webpack": "^5.53.0",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.2.1",
+    "webpack-merge": "^5.8.0"
+  },
+  "peerDependencies": {
+    "@babel/runtime": "^7.x",
+    "clipboard": "^2.x",
+    "vue": "^2.6.x",
+    "vue-class-component": "^7.x",
+    "vue-property-decorator": "^8.x",
+    "@ewan/ewan-admin": "^1.x",
+    "@ewan/ewan-ui": "^1.x",
+    "moment": "^2.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Mr-Viker/video-player.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "homepage": "https://www.npmjs.com/package/@viker-lib/video-player",
+  "author": "Viker",
+  "license": "MIT"
+}

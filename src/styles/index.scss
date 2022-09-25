@@ -1,0 +1,25 @@
+.v-page {
+  height: calc(100vh - 36px);
+}
+
+.page-section-bd {
+  padding: 0 10px;
+  margin-top: 8px;
+  background-color: #F4F6FC;
+
+  &.has-simple-condition {
+    height: calc(100vh - 100px);
+  }
+  &.has-condition {
+    height: calc(100vh - 140px);
+  }
+
+  &.bd-scroll {
+    height: calc(100% - 56px);
+    overflow-y: scroll;
+
+    &.not-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
