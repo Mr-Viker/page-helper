@@ -13,9 +13,9 @@ npm i @viker-lib/page-helper
 
 [main.ts]
 ```js
-import PageHelper from '@viker-lib/page-helper';
+import * as PageHelper from '@viker-lib/page-helper';
 import '@viker-lib/page-helper/dist/index.css';
-Vue.use(PageHelper);
+PageHelper.install();
 ```
 
 
