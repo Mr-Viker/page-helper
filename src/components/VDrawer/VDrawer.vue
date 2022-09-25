@@ -1,3 +1,29 @@
+<template>
+    <el-drawer custom-class='v-drawer' :visible="config.visible" v-bind="config.nativeProps" @close='onClose' v-loading='config.loading' ref="elDrawer">
+    
+        <div class="dialog-content">
+            <div class="content-hd">
+                <i class="el-icon-close icon-close pointer font-24" @click='onBtnCloseClick'></i>
+                <slot name="content-hd-postfix"></slot>
+                <input type="text" class="first-hide-input" />
+            </div>
+    
+            <div class="content-bd">
+                <el-tabs v-if="config.tabs.show" v-model='config.tabs.active' class="drawer-tabs" tab-position="left" type="card" v-on='config.tabs.events'>
+                    <el-tab-pane :name='tab.name' v-for="tab in config.tabs.options" :key='tab.name'>
+                        <template slot='label'><i :class="['iconfont', tab.icon]"></i><span>{{ tab.label }}</span></template>
+                        <slot name="tabs-component" :tab='tab'>
+                            <component :is="tab.component" v-bind='config.data' :ref='tab.name' v-if="config.tabs.active === tab.name"></component>
+                        </slot>
+                    </el-tab-pane>
+                    )
+                    })}
+                </el-tabs>
+            </div>
+        </div>
+    </el-drawer>
+</template>
+
 <script lang='tsx'>
 import { Vue, Component, Prop, Emit, Watch } from "vue-property-decorator";
 import { IDrawerConfig } from "./type";
@@ -20,49 +46,6 @@ export default class VDrawer extends Vue {
     onBtnCloseClick() {
         // @ts-ignore
         this.$refs.elDrawer?.closeDrawer();
-    }
-
-
-    // 渲染tabs
-    renderTabs() {
-        return (
-            <el-tabs v-model={this.config.tabs.active} class="drawer-tabs" tab-position="left" type="card" on={this.config.tabs.events}>
-                {this.config.tabs.options.map(tab => {
-                    const TabComp = tab.component; // tab组件
-                    return (
-                        <el-tab-pane name={tab.name} key={tab.name}>
-                            <template slot='label'><i class={['iconfont', tab.icon]}></i><span>{tab.label}</span></template>
-                            <slot name="tabs-component" tab={tab}>
-                                {this.config.tabs.active === tab.name && (<TabComp props={this.config.data} ref={tab.name} />)}
-                            </slot>
-                        </el-tab-pane>
-                    )
-                })}
-            </el-tabs>
-        )
-    }
-
-    render() {
-        return (
-            <el-drawer custom-class='v-drawer' 
-                props={{visible: this.config.visible, ...this.config.nativeProps}} 
-                onClose={this.onClose} 
-                v-loading={this.config.loading} 
-                ref="elDrawer">
-
-                <div class="dialog-content">
-                    <div class="content-hd">
-                        <i class="el-icon-close icon-close pointer font-24" onClick={this.onBtnCloseClick}></i>
-                        <slot name="content-hd-postfix"></slot>
-                        <input type="text" class="first-hide-input" />
-                    </div>
-
-                    <div class="content-bd">
-                        {this.config.tabs.show && this.renderTabs()}
-                    </div>
-                </div>
-            </el-drawer>
-        )
     }
 
 }

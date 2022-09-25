@@ -69,7 +69,7 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
-  "homepage": "https://www.npmjs.com/package/@viker-lib/video-player",
+  "homepage": "https://www.npmjs.com/package/@viker-lib/page-helper",
   "author": "Viker",
   "license": "MIT"
 }
