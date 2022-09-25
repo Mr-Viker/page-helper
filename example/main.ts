@@ -13,7 +13,7 @@ Vue.config.productionTip = false
 
 PageHelper.install(Vue);
 
-Vue.use(EwanUI);
+Vue.use(EwanUI, {size: 'mini'});
 
 Vue.use(EwanAdmin, {
   appID: 185,

@@ -22,5 +22,6 @@ export default class App extends Vue {
 <style lang="scss">
 #app {
     padding-top: 36px;
+    background-color: #f4f6fc;
 }
 </style>
