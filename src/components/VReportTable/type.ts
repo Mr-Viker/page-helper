@@ -25,6 +25,7 @@ export interface ITableConfig {
     scrollLoading?: boolean, // 滚动加载状态
     hasDynamicColumns?: boolean, // 是否需要请求接口获取动态列 
     events?: Record<string, Function>, // 事件映射 TableBuilder
+    nativeProps?: any, // el-table原生props
     [key: string]: any,
 }
 

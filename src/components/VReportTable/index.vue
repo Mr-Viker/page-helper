@@ -24,6 +24,7 @@
         :infinite-scroll-delay='infiniteScrollDelay' 
         :infinite-scroll-distance='infiniteScrollDistance'
         :key='config.tableId || tableId'
+        v-bind="config.nativeProps"
         ref='table'
         >
 
@@ -34,32 +35,32 @@
                 <!-- 外部没有定义列slot则使用默认渲染 -->
 
                 <!-- 勾选框或者定义了formatter渲染函数的 -->
-                <el-table-column-auto v-if='["selection", "index"].includes(column.type) || !!column.formatter' v-bind="column" 
-                    :class-name="`table-column-${columnIndex} table-column-${column.key}`" :autoFit="autoFit(column)"
+                <el-table-column v-if='["selection", "index"].includes(column.type) || !!column.formatter' v-bind="column" 
+                    :class-name="`table-column-${columnIndex} table-column-${column.key}`"
                     :show-overflow-tooltip='showOverflowTooltip(column)' :key='column.key'>
-                </el-table-column-auto>
+                </el-table-column>
 
                 <!-- 开关 -->
-                <el-table-column-auto v-else-if='column.type == "switch"' v-bind="column" :class-name="`table-column-${columnIndex}`" :autoFit="autoFit(column)" :key='column.key'>
+                <el-table-column v-else-if='column.type == "switch"' v-bind="column" :class-name="`table-column-${columnIndex}`" :key='column.key'>
                     <template slot-scope="scope">
                         <el-switch v-model="scope.row[column.vModelName]" :active-value='column.activeValue' :inactive-value='column.inactiveValue'
                             @change='$emit("switch", scope)' @click.native.stop :disabled="disabled(scope, column)">
                         </el-switch>
                     </template>
-                </el-table-column-auto>
+                </el-table-column>
 
                 <!-- 操作列 -->
-                <el-table-column-auto v-else-if='column.type == "action"' v-bind="column" :class-name="`table-column-${columnIndex}`" :key='column.key' :autoFit="autoFit(column)">
+                <el-table-column v-else-if='column.type == "action"' v-bind="column" :class-name="`table-column-${columnIndex}`" :key='column.key'>
                     <template slot-scope="scope">
                         <el-button class="font-12" type="text" size="mini" v-bind="btn" @click.stop="$emit(btn.actionName, scope)" :loading="scope.row.loading"
                             v-for="btn in column.buttons" :key='btn.actionName'>
                             {{btn.text}}
                         </el-button>
                     </template>
-                </el-table-column-auto>
+                </el-table-column>
 
                 <!-- 默认 -->
-                <el-table-column-auto v-else v-bind="column" :class-name="`table-column-${columnIndex} table-column-${column.key}`" :autoFit="autoFit(column)" 
+                <el-table-column v-else v-bind="column" :class-name="`table-column-${columnIndex} table-column-${column.key}`" 
                     :show-overflow-tooltip='showOverflowTooltip(column)' :key='column.key'>
 <!--                    <ad-table-header slot="header" :column-data="column"></ad-table-header>-->
                     <template slot-scope="scope">
@@ -83,7 +84,7 @@
                             <i @click="$emit('copy', {value: getCellValue(scope.row, column), event: $event})" class="icon-copy el-icon-copy-document"></i>
                         </span>
                     </template>
-                </el-table-column-auto>
+                </el-table-column>
 
             </slot>
         </template>
@@ -146,8 +147,6 @@ export default class VReportTable extends Vue {
 
     // 是否显示tooltips
     showOverflowTooltip(column: any) { return column.hasOwnProperty("showOverflowTooltip") ? column.showOverflowTooltip : true; }
-    // 是否自适应
-    autoFit(column: any) { return column.width === 'auto' || column.width == 0; }
     // 是否禁用
     disabled(scope: any, column: any) { return isFunction(column.disabled) ? column.disabled(scope, column) : column.disabled; }
 
