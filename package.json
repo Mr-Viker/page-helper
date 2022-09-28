@@ -1,6 +1,6 @@
 {
   "name": "@viker-lib/page-helper",
-  "version": "1.0.2",
+  "version": "1.0.6",
   "description": "page-helper",
   "keywords": [
     "vue",
@@ -51,16 +51,6 @@
     "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^4.2.1",
     "webpack-merge": "^5.8.0"
-  },
-  "peerDependencies": {
-    "@babel/runtime": "^7.x",
-    "@ewan/ewan-admin": "^1.x",
-    "@ewan/ewan-ui": "^1.x",
-    "clipboard": "^2.x",
-    "moment": "^2.x",
-    "vue": "^2.6.x",
-    "vue-class-component": "^7.x",
-    "vue-property-decorator": "^8.x"
   },
   "repository": {
     "type": "git",

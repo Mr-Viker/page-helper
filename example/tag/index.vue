@@ -13,15 +13,12 @@
         <div class="page-bd page-section-bd has-simple-condition">
             <v-report-table :data='reports' :config='tableConfig' ref='vReportTable' @selection-change='onSelectionChange'>
                 <!-- 操作 -->
-                <el-table-column-auto slot='el-table-column-action' slot-scope="config" v-bind="config.column"
-                    :class-name="`table-column-${config.columnIndex} cell-auto`" :autoFit='true' :key='config.column.key' :data='config.data'>
+                <el-table-column slot='el-table-column-labelId' slot-scope="config" v-bind="config.column"
+                    :class-name="`table-column-${config.columnIndex} cell-auto`" :key='config.column.key' :data='config.data'>
                     <template slot-scope="scope">
-                        <el-button class="font-12 mgr-10" type="text" size="mini" icon='el-icon-edit' @click.stop="openFormDialog('edit', scope.row)">编辑</el-button>
-                        <el-popconfirm title="确定要删除吗？" @onConfirm='onDelete(scope.row.labelId)'>
-                            <el-button slot="reference" class="font-12" type="text" size="mini">删除</el-button>
-                        </el-popconfirm>
+                      <div>{{ scope.row[config.column.key] }}</div>
                     </template>
-                </el-table-column-auto>
+                </el-table-column>
             </v-report-table>
 
             <div class="common-pagination-container">
@@ -33,16 +30,8 @@
 
         </div>
 
-
-        <!-- <TagInfo
-            :visible="dialogType.includes('TagInfo')"
-            :info="dialogInfo.TagInfo"
-            @success="getReports"
-            @close-dialog="closeDialog('TagInfo')"
-        ></TagInfo> -->
-
-       <v-form-dialog :config='dialogConfig' ref="vFormDialog" 
-            @create-confirm='onCreateConfirm' @edit-confirm='onEditConfirm' @relate-confirm='onRelateConfirm' 
+       <v-form-dialog :config='dialogConfig' ref="vFormDialog"
+            @create-confirm='onCreateConfirm' @edit-confirm='onEditConfirm' @relate-confirm='onRelateConfirm'
             @import-confirm='onImportConfirm' @close='resetDialog'>
             <!-- 模板 -->
             <el-form-item class="form-item-container form-item-template" slot="form-item-template" label="模板">
@@ -50,7 +39,7 @@
             </el-form-item>
 
             <!-- 导入 -->
-            <el-form-item class="form-item-container form-item-file" slot="form-item-file" prop='file' :label="scope.itemConfig.label" 
+            <el-form-item class="form-item-container form-item-file" slot="form-item-file" prop='file' :label="scope.itemConfig.label"
                 slot-scope="scope" :rules="scope.itemConfig.rules">
                 <input class="hide" v-model="scope.form.file" />
                 <el-upload class="file-uploader" ref="elUpload" v-bind="uploadConfig" :on-change='onFileChange' :on-remove='onFileRemove'>
@@ -65,21 +54,17 @@
 <script lang='ts'>
 import { Vue, Component, Mixins } from "vue-property-decorator";
 
-import CommonPagination from '../../src/mixins/pagination';
 import ReportTable from './mixins/report-table';
 import Condition from './mixins/condition';
 import FormDialog from './mixins/form-dialog';
+import { BasePagination } from '../../dist';
 
-
-
-import { commonInitFormItem } from "../../src/mixins/condition/v2/form-config/init";
-import { formatFormToFormData } from "../../src/utils/jy-util";
 
 
 @Component({
-    name: 'tag',
+    name: 'mall-pay-template',
 })
-export default class Tag extends Mixins(CommonPagination, ReportTable, Condition, FormDialog) {
+export default class Tag extends Mixins(Condition, ReportTable, FormDialog, BasePagination) {
 
     reports: any[] = []; // 报表列表
 
@@ -87,11 +72,7 @@ export default class Tag extends Mixins(CommonPagination, ReportTable, Condition
     created() {
         this.setTableColumns(false);
         this.search();
-    }
-
-    // 每次进入页面需要重新获取关联游戏分类，因为可能操作完游戏分类管理就回来本页面操作了
-    activated() {
-        commonInitFormItem(this.condition.formConfigs.appCategoryIds, {vm: this});
+        console.log('tableConfig: ', this.tableConfig.columns);
     }
 
     // 搜索
@@ -102,9 +83,20 @@ export default class Tag extends Mixins(CommonPagination, ReportTable, Condition
 
     // 获取报表数据
     async getReports() {
-        // if(this.condition.submitting) { return; } else { this.condition.submitting = true; }
+          this.reports = [
+            {
+              labelId: 1,
+              labelName: '阿萨德',
+            },
+            {
+              labelId: 2,
+              labelName: '2阿萨德',
+            }
+          ]
 
-        let formatForm = this.getFormatForm();
+      // if(this.condition.submitting) { return; } else { this.condition.submitting = true; }
+
+        // let formatForm = this.getFormatForm();
         // const res = await getLabelList(formatForm).finally(() => this.condition.submitting = false);
         // if(res.code === 0) {
         //     this.reports = res.data.records;
@@ -157,13 +149,13 @@ export default class Tag extends Mixins(CommonPagination, ReportTable, Condition
 
     /*********************************** 导入 start ***********************************/
 
-    
+
     // 下载模板
     onBtnDownloadClick() {
         // this.exportExcelByApi(downloadTagImportTemplate);
     }
 
-    
+
     // 上传配置
     uploadConfig: any = {
         action: '',
@@ -187,7 +179,7 @@ export default class Tag extends Mixins(CommonPagination, ReportTable, Condition
     onFileRemove(file: any, fileList: any[]) {
         this.dialogConfig.importForm.file = '';
     }
-    
+
     // 重置弹框
     resetDialog() {
         // @ts-ignore

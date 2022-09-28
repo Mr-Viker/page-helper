@@ -4,14 +4,14 @@ import EwanAdmin from '@ewan/ewan-admin';
 import '@ewan/ewan-admin/dist/ewan-admin.css';
 import EwanUI from '@ewan/ewan-ui';
 import '@ewan/ewan-ui/lib/theme-chalk/index.css'
-import * as PageHelper from '../src';
-import '../src/styles/index.scss'
+import * as PageHelper from '../dist/index.js';
+import '../dist/index.css'
 import store from './store/index.js';
 import router, {asyncRouterMap, constantRouterMap} from './router/index.js';
 
 Vue.config.productionTip = false
 
-PageHelper.install(Vue);
+Vue.use(PageHelper)
 
 Vue.use(EwanUI, {size: 'mini'});
 
