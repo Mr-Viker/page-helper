@@ -30,63 +30,62 @@
 
         <template v-for='(column, columnIndex) in config.columns'>
             <!-- 提供两种渲染列的方式 默认根据config.columns下的配置来渲染 另一种是slot(需在config.columns下配置一下该列的key) -->
-            <slot :name="'el-table-column-' + column.key" :column="column" :column-index='columnIndex' :data='data'>
+            <slot v-if="column.customSlot" :name="'el-table-column-' + column.key" :column="column" :column-index='columnIndex' :data='data'></slot>
 
-                <!-- 外部没有定义列slot则使用默认渲染 -->
+            <!-- 外部没有定义列slot则使用默认渲染 -->
 
-                <!-- 勾选框或者定义了formatter渲染函数的 -->
-                <el-table-column v-if='["selection", "index"].includes(column.type) || !!column.formatter' v-bind="column" 
-                    :class-name="`table-column-${columnIndex} table-column-${column.key}`"
-                    :show-overflow-tooltip='showOverflowTooltip(column)' :key='column.key'>
-                </el-table-column>
+            <!-- 勾选框或者定义了formatter渲染函数的 -->
+            <el-table-column v-else-if='["selection", "index"].includes(column.type) || !!column.formatter' v-bind="column" 
+                :class-name="`table-column-${columnIndex} table-column-${column.key}`"
+                :show-overflow-tooltip='showOverflowTooltip(column)' :key='column.key'>
+            </el-table-column>
 
-                <!-- 开关 -->
-                <el-table-column v-else-if='column.type == "switch"' v-bind="column" :class-name="`table-column-${columnIndex}`" :key='column.key'>
-                    <template slot-scope="scope">
-                        <el-switch v-model="scope.row[column.vModelName]" :active-value='column.activeValue' :inactive-value='column.inactiveValue'
-                            @change='$emit("switch", scope)' @click.native.stop :disabled="disabled(scope, column)">
-                        </el-switch>
-                    </template>
-                </el-table-column>
+            <!-- 开关 -->
+            <el-table-column v-else-if='column.type == "switch"' v-bind="column" :class-name="`table-column-${columnIndex}`" :key='column.key'>
+                <template slot-scope="scope">
+                    <el-switch v-model="scope.row[column.vModelName]" :active-value='column.activeValue' :inactive-value='column.inactiveValue'
+                        @change='$emit("switch", scope)' @click.native.stop :disabled="disabled(scope, column)">
+                    </el-switch>
+                </template>
+            </el-table-column>
 
-                <!-- 操作列 -->
-                <el-table-column v-else-if='column.type == "action"' v-bind="column" :class-name="`table-column-${columnIndex}`" :key='column.key'>
-                    <template slot-scope="scope">
-                        <el-button class="font-12" type="text" size="mini" v-bind="btn" @click.stop="$emit(btn.actionName, scope)" :loading="scope.row.loading"
-                            v-for="btn in column.buttons" :key='btn.actionName'>
-                            {{btn.text}}
-                        </el-button>
-                    </template>
-                </el-table-column>
+            <!-- 操作列 -->
+            <el-table-column v-else-if='column.type == "action"' v-bind="column" :class-name="`table-column-${columnIndex}`" :key='column.key'>
+                <template slot-scope="scope">
+                    <el-button class="font-12" type="text" size="mini" v-bind="btn" @click.stop="$emit(btn.actionName, scope)" :loading="scope.row.loading"
+                        v-for="btn in column.buttons" :key='btn.actionName'>
+                        {{btn.text}}
+                    </el-button>
+                </template>
+            </el-table-column>
 
-                <!-- 默认 -->
-                <el-table-column v-else v-bind="column" :class-name="`table-column-${columnIndex} table-column-${column.key}`" 
-                    :show-overflow-tooltip='showOverflowTooltip(column)' :key='column.key'>
+            <!-- 默认 -->
+            <el-table-column v-else v-bind="column" :class-name="`table-column-${columnIndex} table-column-${column.key}`" 
+                :show-overflow-tooltip='showOverflowTooltip(column)' :key='column.key'>
 <!--                    <ad-table-header slot="header" :column-data="column"></ad-table-header>-->
-                    <template slot-scope="scope">
-                        <template v-if="!scope.row.hasOwnProperty(column.prop)">-</template>
-                        <!-- image -->
-                        <el-popover v-else-if='column.tag == "image"' popper-class='table-popover' placement="right-start" width="300" trigger="hover">
-                            <img :src="scope.row[column.prop] + '?imageMogr2/thumbnail/480x'" class='table-popover-img' />
-                            <img slot="reference" :src="scope.row[column.prop] + '?imageMogr2/thumbnail/480x'" class='table-img' />
-                        </el-popover>
+                <template slot-scope="scope">
+                    <template v-if="!scope.row.hasOwnProperty(column.prop)">-</template>
+                    <!-- image -->
+                    <el-popover v-else-if='column.tag == "image"' popper-class='table-popover' placement="right-start" width="300" trigger="hover">
+                        <img :src="scope.row[column.prop] + '?imageMogr2/thumbnail/480x'" class='table-popover-img' />
+                        <img slot="reference" :src="scope.row[column.prop] + '?imageMogr2/thumbnail/480x'" class='table-img' />
+                    </el-popover>
 
-                        <!-- tag -->
-                        <el-tag v-else-if="column.tag == 'tag' && column.map[scope.row[column.prop]]" :type='column.map[scope.row[column.prop]].type'>
-                            {{column.map[scope.row[column.prop]].label}}
-                        </el-tag>
+                    <!-- tag -->
+                    <el-tag v-else-if="column.tag == 'tag' && column.map[scope.row[column.prop]]" :type='column.map[scope.row[column.prop]].type'>
+                        {{column.map[scope.row[column.prop]].label}}
+                    </el-tag>
 
-                        <!-- default -->
-                        <template v-else>{{getCellValue(scope.row, column)}}</template>
+                    <!-- default -->
+                    <template v-else>{{getCellValue(scope.row, column)}}</template>
 
-                        <!-- copy -->
-                        <span v-if="column.copy" class="copy-container">
-                            <i @click="$emit('copy', {value: getCellValue(scope.row, column), event: $event})" class="icon-copy el-icon-copy-document"></i>
-                        </span>
-                    </template>
-                </el-table-column>
+                    <!-- copy -->
+                    <span v-if="column.copy" class="copy-container">
+                        <i @click="$emit('copy', {value: getCellValue(scope.row, column), event: $event})" class="icon-copy el-icon-copy-document"></i>
+                    </span>
+                </template>
+            </el-table-column>
 
-            </slot>
         </template>
 
 
