@@ -11,7 +11,7 @@ import ConditionStatus from '@/mixins/condition/v2/decorator';
 export default class BasePage extends Vue {
 
     reports: any[] = []; // 表格数据
-    summary: any[] = []; // 表格顶部合计行
+    summary: any = {}; // 表格顶部合计行
 
 
     created() {

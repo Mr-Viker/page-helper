@@ -4,17 +4,15 @@
 
         <div class="dialog-bd" v-loading='config.loading'>
             <slot name="form-prefix"></slot>
-            <slot>
-                <admin-form v-if='form' :form='form' :configs='config.formConfigs' :dropdown='true' 
-                    :class="'dialog-form-' + (config.columnCount || 1)" ref="adminForm"
-                    @submit='confirm'>
-                    <template v-for='(formConfig, key) in config.formConfigs'>
-                        <template v-if="formConfig.customSlot" :slot="`form-item-${key}`">
-                            <slot :name="`form-item-${key}`" :item-key='key' :item-config='formConfig' :form='form'></slot>
-                        </template>
+            <admin-form v-if='form' :form='form' :configs='config.formConfigs' :dropdown='true' 
+                :class="'dialog-form-' + (config.columnCount || 1)" ref="adminForm"
+                @submit='confirm'>
+                <template v-for='(formConfig, key) in config.formConfigs'>
+                    <template v-if="formConfig.customSlot" :slot="`form-item-${key}`">
+                        <slot :name="`form-item-${key}`" :item-key='key' :item-config='formConfig' :form='form'></slot>
                     </template>
-                </admin-form>
-            </slot>
+                </template>
+            </admin-form>
             <slot name="form-postfix"></slot>
         </div>
 

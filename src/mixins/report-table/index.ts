@@ -22,7 +22,7 @@ export default class ReportTable extends Vue {
             // 表格配置
             tableConfig: {
                 class: 'report-table',
-                height: 'calc(100vh - 36px - 96px - 8px - 48px - 8px)', // 默认有tagview+筛选组件(两行的高度规)+分页组件
+                height: 'calc(100vh - 36px - 56px - 40px - 8px - 48px - 8px)', // 默认有tagview+筛选组件(两行的高度规)+分页组件
                 stripe: true,
                 border: true,
                 columns: [],
@@ -34,7 +34,7 @@ export default class ReportTable extends Vue {
                 gatherMethod: ({ columns, data }) => {
                     return columns.map((column, index) => {
                         const isShowTotalColumn = !isEmptyValue(this.tableConfig.totalProperty) ? column.property == this.tableConfig.totalProperty : index === this.tableConfig.totalIndex;
-                        if(isShowTotalColumn) { return `合计: ${this.summary.total || '-'}项`; }
+                        if(isShowTotalColumn) { return `合计: ${this.summary?.total || '-'}项`; }
 
                         if(this.summary?.hasOwnProperty(column.property) && !this.excludeSummaryProps?.includes(column.property)) {
                             return getTableCellFormatValue(this.summary, this.getCustomColumnConfig(column.property));
