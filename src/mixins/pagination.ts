@@ -7,10 +7,10 @@ export default class Pagination extends Vue {
     // 分页
     protected pagination: any = {
         current: 1,
-        size: 30,
+        size: 20,
         total: 0,
-        sizes: [30, 50, 100],
-        layout: 'prev, pager, next, jumper, sizes',
+        sizes: [10, 20, 30, 50, 100, 200],
+        layout: 'total, prev, pager, next, jumper, sizes',
     };
 
     protected getReportsMethodName: string = 'getReports'; // 请求报表列表数据方法名
