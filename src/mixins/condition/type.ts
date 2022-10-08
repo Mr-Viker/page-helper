@@ -161,6 +161,7 @@ export interface IChangeRequest {
     unresetValue?: boolean, // 是否不重置表单值
     otherParentKeys?: string[], // 其他父级表单项的key 主要用于有两个父级同时控制子级的情况
     disabled?: boolean, // 手动设置disabled
+    unresetDisabled?: boolean, // 是否不重新设置disabled
     [key: string]: any,
 }
 

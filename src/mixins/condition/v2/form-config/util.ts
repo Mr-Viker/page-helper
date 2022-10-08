@@ -58,7 +58,8 @@ export function onFormItemChange(data: IChangeData, requests: IChangeRequest | I
             if(!isEmptyValue(form[childKey]) && !data.unresetValue && !child.unresetValue && !isSelectedGather(form[childKey])) {
                 Vue.set(form, childKey, getFormDefaultValue(childConfig));
             }
-            Vue.set(childConfig, 'disabled', isDisabled(child));
+            // 解决表单弹框中重新设置disabled会覆盖config.disabled写的方法
+            !child.unresetDisabled && Vue.set(childConfig, 'disabled', isDisabled(child));
             Vue.set(childConfig, 'loading', true);
             const res = await (api)(clearInvalidFormValue(params)).finally(() => Vue.set(childConfig, 'loading', false));
             if(res.code === 0) {
