@@ -51,14 +51,14 @@ export function onFormItemChange(data: IChangeData, requests: IChangeRequest | I
         // 建议使用form[key]来判断而不是data.value 因为考虑到在onChange方法中可能会改变选中值，如果value为非引用类型，则在onChange中肯定是改变form[key]而非直接改变data.value
         if(key && isSelectedGather(form[key]) || otherParentKeys.some(other => hasOwn(configs, other) && isSelectedGather(form[other]))) {
             Vue.set(form, childKey, getFormDefaultValue(childConfig, true));
-            Vue.set(childConfig, 'disabled', hasOwn(child, 'disabled') ? child.disabled : true);
+            Vue.set(childConfig, 'disabled', hasOwn(child, 'disabled') ? isDisabled(child) : true);
 
         } else {
             // 如果没有设置子级不重置值或子级不是[汇总]则重置回默认值
             if(!isEmptyValue(form[childKey]) && !data.unresetValue && !child.unresetValue && !isSelectedGather(form[childKey])) {
                 Vue.set(form, childKey, getFormDefaultValue(childConfig));
             }
-            Vue.set(childConfig, 'disabled', !!child.disabled);
+            Vue.set(childConfig, 'disabled', isDisabled(child));
             Vue.set(childConfig, 'loading', true);
             const res = await (api)(clearInvalidFormValue(params)).finally(() => Vue.set(childConfig, 'loading', false));
             if(res.code === 0) {
@@ -141,7 +141,7 @@ export function isHide(config: IFormConfig, form: any = {}) {
 // 判断表单项是否禁用
 export function isDisabled(config: IFormConfig, form: any = {}) {
     // @ts-ignore 
-    return isFunction(config.disabled) ? config.disabled(form) : config.disabled;
+    return isFunction(config.disabled) ? config.disabled(form) : !!config.disabled;
 }
 
 

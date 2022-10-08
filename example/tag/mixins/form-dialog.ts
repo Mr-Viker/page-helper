@@ -49,18 +49,25 @@ export default class FormDialog extends Mixins(BaseFormDialog) {
             status: mergeConfig(defaultRadioConfig, {
                 label: '状态',
                 props: { hideAll: true },
-                options: Object.values(status),
+                options: [
+                    {label: '开', value: 1 },
+                    {label: '管', value: 0 },
+                ],
                 hide: form => this.isBatchRelateAppCateDialog() || this.isImportDialog(),
             }),
             appCategoryIds: mergeConfig(defaultSelectConfig, {
                 label: '关联游戏',
                 props: {
-                    getOptions: { module: 'material', action: 'getIndependentAppCateList', state: 'independentAppCateList' },
-                    label: 'appCategoryName',
-                    value: 'appCategoryId',
+                    // getOptions: { module: 'material', action: 'getIndependentAppCateList', state: 'independentAppCateList' },
+                    // label: 'appCategoryName',
+                    // value: 'appCategoryId',
                     hideAll: true,
                     reinitOnOpen: true,
                 },
+                options: [
+                    {label: '开', value: 1 },
+                    {label: '管', value: 0 },
+                ],
                 rules: [ { type: 'array', required: true, message: '不能为空' } ],
                 hide: form => this.isImportDialog(),
             }),

@@ -27,3 +27,10 @@
 .hide {
   display: none !important;
 }
+
+
+.v-form-dialog {
+  .el-radio-button__orig-radio:disabled:checked+.el-radio-button__inner {
+    color: rgba(22, 119, 255, .5);
+  }
+}
