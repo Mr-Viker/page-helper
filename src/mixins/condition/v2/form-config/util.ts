@@ -5,7 +5,18 @@
  */
 import Vue from "vue";
 import { IFormConfig, IChangeData, IChangeRequest, IFormConfigs } from "@/mixins/condition/type";
-import { clearInvalidFormValue, gatherValue, hasOwn, isEmptyValue, isFunction, isObject, jyAllValue, deepClone, isEqual } from "@/utils/jy-util";
+import {
+    clearInvalidFormValue,
+    gatherValue,
+    hasOwn,
+    isEmptyValue,
+    isFunction,
+    isObject,
+    jyAllValue,
+    deepClone,
+    isEqual,
+    EmptyStrValue, NullValue
+} from "@/utils/jy-util";
 import { prevPickerOptions, nextPickerOptions } from '@ewan/ewan-ui/packages/date-picker/src/picker/picker-options';
 
 
@@ -98,9 +109,9 @@ export function getFormatOptions(config: IFormConfig = {}, options: any[] = []) 
 
     // 隐藏[全部]选项 兼容旧版本的空字符串[全部]选项
     if(hideAll) {
-        options = options.filter(option => ![jyAllValue, ''].includes(option[value]));
+        options = options.filter(option => ![jyAllValue, EmptyStrValue, NullValue].includes(option[value]));
     // 如果要显示[全选]选项 则检测options是否已包含 如果没有则推入
-    } else if(options.every(option => ![jyAllValue, ''].includes(option[value]))) {
+    } else if(options.every(option => ![jyAllValue, EmptyStrValue, NullValue].includes(option[value]))) {
         options = [ {[label]: allLabel, [value]: jyAllValue} ].concat(options);
     }
 

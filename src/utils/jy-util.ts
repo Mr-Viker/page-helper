@@ -3,6 +3,7 @@ import { funDownload } from './download';
 
 
 export const jyAllValue = 'all'; // jy全选值
+export const NullValue = null; // 基础数据全选值
 export const gatherValue = -1; // 汇总值
 export const NONEValue = 'NONE'; // 不限|无
 export const EmptyStrValue = ''; // 空字符串
