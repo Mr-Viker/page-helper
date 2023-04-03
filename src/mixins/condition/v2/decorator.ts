@@ -27,7 +27,7 @@ const ConditionStatus: { Add?: Function, Update?: Function, Rest?: Function, Val
  * 给类添加请求状态属性 [class]
  * 注：如果有使用condition mixins了就不需要手动加了 baseCondition已经自动加了
  * 因为vue class和普通的js class不同 所以尽量不要用Add注解来加属性
- * @returns 
+ * @returns
  */
 ConditionStatus.Add = () => {
     return (target: any) => {
@@ -39,7 +39,7 @@ ConditionStatus.Add = () => {
 
 /**
  * 重置所有状态 [method]
- * @returns 
+ * @returns
  */
  ConditionStatus.Rest = () => {
     return (target: Vue, key: string, descriptor: any) => {
@@ -56,7 +56,7 @@ ConditionStatus.Add = () => {
 /**
  * 给请求方法(getList)更新请求状态 [method]
  * @param autoCheckComplete 是否自动检测全部加载完成 值为true时被装饰的方法必须要return接口返回的result
- * @returns 
+ * @returns
  */
 ConditionStatus.Update = (autoCheckComplete: boolean = false) => {
     return (target: Vue, key: string, descriptor: any) => {
@@ -67,7 +67,7 @@ ConditionStatus.Update = (autoCheckComplete: boolean = false) => {
                 if (this.condition.submitting) { return } else { this.condition.submitting = true }
                 const res = await original.apply(this, args);
                 // 检测是否全部加载完成
-                if (autoCheckComplete && !isEmptyValue(res) && res.code === 0 && res.data.current >= res.data.pages) this.condition.complete = true;
+                if (autoCheckComplete && !isEmptyValue(res) && res.code === 0) this.condition.complete = res.data.current >= res.data.pages;
                 return res;
 
             } catch (error) {
@@ -85,9 +85,9 @@ ConditionStatus.Update = (autoCheckComplete: boolean = false) => {
 /**
  * 验证
  * 如果还未生成dom则直接调用 不走验证逻辑
- * 注：如果需要初始化的请求就验证 必须在mounted调用 而不能在created调用(此时dom还未渲染) 
+ * 注：如果需要初始化的请求就验证 必须在mounted调用 而不能在created调用(此时dom还未渲染)
  * 可能出现的情况 有些表单项只在`adminForm`出现 有些表单项只在`dropdownAdminForm`出现 所以需要使用两个表单组件的验证
- * @returns 
+ * @returns
  */
 ConditionStatus.Validate = (refWrapper?: string) => {
     return (target: Vue, key: string, descriptor: any) => {
@@ -97,7 +97,7 @@ ConditionStatus.Validate = (refWrapper?: string) => {
             const wrapper = refWrapper ? this.$refs[refWrapper] : this; // 某些特殊页面会有admin-condition的包装组件 比如计划列表页
             const elAdminForm = wrapper?.$refs.adminCondition?.$refs.adminForm?.$refs.elForm; // 底部固定表单行
             const elDropdownAdminForm = wrapper?.$refs.adminCondition?.$refs.dropdownAdminForm?.$refs.elForm; // 下拉表单行
-            
+
             let totalErr = [];
             [elAdminForm, elDropdownAdminForm].forEach(component => {
                 if(!isEmptyValue(component)) component.validate((valid: boolean, err: any[]) => { if(!valid) totalErr = err });
