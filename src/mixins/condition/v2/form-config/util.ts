@@ -29,7 +29,7 @@ export function mergeConfig(defaultConfig: IFormConfig, customConfig: IFormConfi
     keys.map(key => {
         defaultValue = defaultConfig[key];
         customValue = customConfig[key];
-        
+
         if(!hasOwn(customConfig, key)) {
             Vue.set(customConfig, key, defaultValue)
         } else if(defaultValue !== customValue && isObject(defaultValue) && isObject(customValue)) {
@@ -72,8 +72,10 @@ export function onFormItemChange(data: IChangeData, requests: IChangeRequest | I
             // 解决表单弹框中重新设置disabled会覆盖config.disabled写的方法
             !child.unresetDisabled && Vue.set(childConfig, 'disabled', isDisabled(child));
             Vue.set(childConfig, 'loading', true);
-            const res = await (api)(clearInvalidFormValue(params)).finally(() => Vue.set(childConfig, 'loading', false));
-            if(res.code === 0) {
+            const res = await (api)(clearInvalidFormValue(params))
+              .catch(() => setFormatOptions(childConfig, [], childKey))
+              .finally(() => Vue.set(childConfig, 'loading', false));
+            if(res?.code === 0) {
                 await setFormatOptions(childConfig, res.data, childKey);
             }
             return res;
@@ -146,13 +148,13 @@ export function checkIsShowConfig(config: IFormConfig , form: string) {
 
 // 判断表单项是否隐藏
 export function isHide(config: IFormConfig, form: any = {}) {
-    // @ts-ignore 
+    // @ts-ignore
     return isFunction(config.hide) ? config.hide(form) : config.hide;
 }
 
 // 判断表单项是否禁用
 export function isDisabled(config: IFormConfig, form: any = {}) {
-    // @ts-ignore 
+    // @ts-ignore
     return isFunction(config.disabled) ? config.disabled(form) : !!config.disabled;
 }
 
@@ -174,7 +176,7 @@ export interface ICommonCheckFormItemChangeParams {
 // 检测关联表单项 如果父项表单值改变了 则触发父项的onChange获取其子项的选项列表
 export function commonCheckFormItemChange(checkParams: ICommonCheckFormItemChangeParams) {
     const { newForm, oldForm, formConfigs, unresetValue = true, forceEmitOnChange = false } = checkParams;
-    
+
     for(let [key, config] of Object.entries(formConfigs)) {
         if(config.hide || !isFunction(config?.onChange)) continue;
         const isChange = forceEmitOnChange || !isEqual(newForm[key], oldForm[key]);
